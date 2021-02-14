@@ -10,6 +10,7 @@ Detail mentor
             <h4 class="text-center"> {{ $data->nama }}</h4>
             @foreach ($data->chapters as $chapter)
                 <span style="font-weight: bold">{{ $chapter->nama }} <br> </span> 
+                {{-- mengambuk data lesson perchapter --}}
                 @foreach ($chapter->lessons as $lesson)
                     {{ $lesson->nama }} <a href="" data-toggle="modal" data-target="#tes{{ $lesson->id }}"> Cek Video </a> <br>
 
@@ -41,6 +42,40 @@ Detail mentor
                         </div>
                     </div>
                 @endforeach
+
+                {{-- button modal tambah video --}}
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tambahLesson{{ $chapter->id }}">
+                    Tambah Materi Video
+                </button>
+                {{-- Modal tambah video --}}
+                <form action="">
+                    <div class="modal fade" id="tambahLesson{{ $chapter->id }}" tabindex="-1" role="dialog" aria-labelledby="modalSayaLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalSayaLabel">{{ $chapter->nama }}
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <br/>
+                                    <div class="form-group">
+                                        <label for="">Judul Video Materi</label>
+                                        <input type="text" class="form-control" name="nama">
+                                        <label for="">Url Youtube Video Materi</label>
+                                        <input type="text" class="form-control" name="nama">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="button" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <hr>
             @endforeach
         </div>

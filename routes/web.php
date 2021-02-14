@@ -28,6 +28,7 @@ Route::prefix('admin')->namespace('Admin')->middleware(['auth', 'admin'])
     Route::resource('kategori', 'kategoriController');
     Route::resource('course', 'CourseController');
     // Route::post('/kategori', 'kategoriController@store')->name('kategori');
+    Route::post('/lesson/create', 'Admin\LessonController@store')->name('create-lesson');
 });
 
 Route::get('/keluar', '\App\Http\Controllers\Auth\LoginController@logout')->name('keluar');
