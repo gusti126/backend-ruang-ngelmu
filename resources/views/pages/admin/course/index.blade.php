@@ -81,9 +81,15 @@ Course Page
                                                         <h6 style="margin-bottom: 0px; color: black">{{ $c->mentor->nama }}</h6>
                                                         <p style="margin-top: 0px;">{{ $c->mentor->profession }}</p>
                                                     </div>
-                                                    <div class="col-12 text-right">
-                                                        <a href="{{ route('course.show', $c->id) }}" class="btn btn-info btn-sm mx-4">Detail</a>
-                                                        <a href="#" class="btn btn-outline-danger btn-sm">Hapus</a>
+                                                    <div class="col-12 text-center">
+                                                        <a href="{{ route('course.edit', $c->id) }}" class="btn btn-primary btn-sm mx-1">Edit</a>
+                                                        <a href="{{ route('course.show', $c->id) }}" class="btn btn-info btn-sm mx-1">Materi Kelas</a>
+                                                       <form action="{{ route('course.destroy', $c->id) }}" method="post" class="d-inline">
+                                                            @csrf
+                                                            @method('delete')
+                                                            <button class="btn btn-outline-danger btn-sm mx-1" onclick="return confirm('Hapus Data ?')"> Hapus
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             

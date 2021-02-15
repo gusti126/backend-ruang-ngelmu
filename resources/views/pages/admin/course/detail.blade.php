@@ -8,39 +8,18 @@ Detail mentor
     <div class="card">
         <div class="card-body">
             <h4 class="text-center"> {{ $data->nama }}</h4>
+            <p class="text-center">Kategori : {{ $data->kategori->nama }}</p>
             @foreach ($data->chapters as $chapter)
                 <span style="font-weight: bold">{{ $chapter->nama }} <br> </span> 
                 {{-- mengambuk data lesson perchapter --}}
                 @foreach ($chapter->lessons as $lesson)
-                    {{ $lesson->nama }} <a href="" data-toggle="modal" data-target="#tes{{ $lesson->id }}"> Cek Video </a> <br>
-
-                    {{-- Modal Video --}}
-                    <div class="modal fade" id="tes{{ $lesson->id }}" tabindex="-1" role="dialog" aria-labelledby="modalSayaLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalSayaLabel">{{ $chapter->nama }}
-                                        <br>
-                                        <span style="font-weight: normal">{{ $lesson->nama }}</span>
-                                    </h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <br/>
-                                    <div class="embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{ $lesson->video }}" allowfullscreen>
-                                        </iframe>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                    {{-- <button type="button" class="btn btn-primary">Oke</button> --}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {{ $lesson->nama }} <a href="" class="text-primary mx-1" data-toggle="modal" data-target="#tes{{ $lesson->id }}"> Cek Video </a> | 
+                    <a href="{{ route('lesson-edit', ['id' => $lesson->id, 'course_id' => $course_id]) }}" class="text-warning mx-1" >Edit</a>
+                     | <a href="{{ route('lesson-delete', ['id' => $lesson->id, 'course_id' => $course_id]) }}" class="text-danger mx-1">Delete</a>
+                    <br>
+                    @include('includes.modalCekVideo')
+                    {{-- modal edit video/lesson --}}
+                     {{-- @include('includes.editVideo') --}}
                 @endforeach
 
                 {{-- button modal tambah video --}}
@@ -48,36 +27,18 @@ Detail mentor
                     Tambah Materi Video
                 </button>
                 {{-- Modal tambah video --}}
-                <form action="">
-                    <div class="modal fade" id="tambahLesson{{ $chapter->id }}" tabindex="-1" role="dialog" aria-labelledby="modalSayaLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalSayaLabel">{{ $chapter->nama }}
-                                    </h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <br/>
-                                    <div class="form-group">
-                                        <label for="">Judul Video Materi</label>
-                                        <input type="text" class="form-control" name="nama">
-                                        <label for="">Url Youtube Video Materi</label>
-                                        <input type="text" class="form-control" name="nama">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                    <button type="button" class="btn btn-primary">Simpan</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                @include('includes.tambahVideo')
                 <hr>
             @endforeach
+            
+
+                {{-- Tambah Chapter --}}
+                {{-- button modal tambah Chapter --}}
+                <button class="btn btn-info btn-block" data-toggle="modal" data-target="#tambahChapter">
+                    Tambah Chapter
+                </button>
+                {{-- Modal tambah chapter --}}
+                @include('includes.tambahChapter')
         </div>
     </div>
 </div>

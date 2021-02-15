@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Kategori;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\mentor;
 use App\Models\My_course;
 use App\Models\Review;
@@ -82,7 +83,7 @@ class CourseController extends Controller
     public function show($id)
     {
         $data = Course::with([
-            'chapters.lessons', 'mentor'
+            'chapters.lessons', 'mentor', 'kategori'
             ])->findOrFail($id);
         $review = Review::where('course_id', $id)->get()->toArray();
         $totalStudent = My_course::where('course_id', '=', $id)->count();
@@ -92,6 +93,7 @@ class CourseController extends Controller
         // dd($data);
         return view('pages.admin.course.detail', [
             'data' => $data,
+            'course_id' => $data['id'],
         ]);
 
     }
@@ -104,7 +106,16 @@ class CourseController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Course::findOrFail($id);
+        // dd($data->deskripsi);
+        $mentor = mentor::get();
+        $kategori = Kategori::get();
+        return view('pages.admin.course.edite', [
+            'item' => $data,
+            'deskripsi' => $data->deskripsi,
+            'mentor' => $mentor,
+            'kategori' => $kategori
+        ]);
     }
 
     /**
@@ -116,7 +127,26 @@ class CourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string',
+            'sertifikat' => 'required',
+            'thumbnail' => 'required|image',
+            'type' => 'required|in:free,premium',
+            'level' => 'required|in:all-level,beginer,intermedaite,advance',
+            'mentor_id' => 'required|integer',
+            'deskripsi' => 'string'
+        ]);
+        $course = Course::findOrFail($id);
+
+        $data = $request->all();
+        $data['thumbnail'] = $request->file('thumbnail')->store(
+            'assets/image/thumbnail course', 'public'
+        );
+
+        $course->update($data);
+
+        return redirect()->route('course.index');
+
     }
 
     /**
@@ -127,7 +157,10 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Course::findOrFail($id);
+
+        $data->delete();
+        return redirect()->route('course.index');
     }
 }
 
